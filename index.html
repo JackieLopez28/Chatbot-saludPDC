@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistente de Salud Ocupacional</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --surface2: #f0ede7;
+    --border: #e2ddd6;
+    --text: #1a1816;
+    --text2: #6b6560;
+    --text3: #9c9590;
+    --teal: #0f6e56;
+    --teal-light: #e1f5ee;
+    --teal-mid: #1d9e75;
+    --amber: #854f0b;
+    --amber-light: #faeeda;
+    --red: #a32d2d;
+    --red-light: #fcebeb;
+    --blue: #185fa5;
+    --blue-light: #e6f1fb;
+    --gray-chip: #eeece8;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 16px rgba(26,24,22,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .chat-wrapper {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    height: 92vh;
+    max-height: 820px;
+    background: var(--surface);
+    border-radius: 24px;
+    box-shadow: var(--shadow), 0 0 0 1px var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Header */
+  .header {
+    padding: 18px 22px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+  }
+  .avatar {
+    width: 42px;
+    height: 42px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .avatar svg { width: 22px; height: 22px; stroke: white; fill: none; }
+  .header-info h1 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .header-info p { font-size: 12px; color: var(--text3); margin-top: 1px; }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    margin-left: auto;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px #dcfce7;
+  }
+
+  /* Messages */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    animation: fadeUp 0.25s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-row.user { flex-direction: row-reverse; }
+
+  .bubble {
+    max-width: 80%;
+    padding: 11px 15px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .bot .bubble {
+    background: var(--surface2);
+    border-bottom-left-radius: 5px;
+    color: var(--text);
+  }
+  .user .bubble {
+    background: var(--teal);
+    color: #fff;
+    border-bottom-right-radius: 5px;
+  }
+
+  .bot-icon {
+    width: 28px; height: 28px;
+    background: var(--teal-light);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .bot-icon svg { width: 14px; height: 14px; stroke: var(--teal); fill: none; }
+
+  /* Chips / opciones rápidas */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .chip {
+    padding: 7px 13px;
+    background: var(--gray-chip);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+  .chip:hover { background: var(--teal-light); border-color: var(--teal-mid); color: var(--teal); }
+  .chip.danger { background: var(--red-light); border-color: #f09595; color: var(--red); }
+  .chip.danger:hover { background: #f7c1c1; }
+  .chip.info { background: var(--blue-light); border-color: #85b7eb; color: var(--blue); }
+  .chip.warn { background: var(--amber-light); border-color: #fac775; color: var(--amber); }
+
+  /* Alert card */
+  .alert-card {
+    background: var(--red-light);
+    border: 1px solid #f09595;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--red);
+    line-height: 1.5;
+  }
+  .alert-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .info-card {
+    background: var(--blue-light);
+    border: 1px solid #85b7eb;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--blue);
+    line-height: 1.5;
+  }
+  .info-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .success-card {
+    background: var(--teal-light);
+    border: 1px solid #5dcaa5;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--teal);
+    line-height: 1.5;
+  }
+  .success-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+  /* Typing indicator */
+  .typing { display: flex; gap: 4px; padding: 14px 16px; }
+  .typing span {
+    width: 7px; height: 7px;
+    background: var(--text3);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,60%,100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  /* Input area */
+  .input-area {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: var(--surface);
+  }
+  .input-area textarea {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    line-height: 1.4;
+    max-height: 100px;
+    color: var(--text);
+    background: var(--surface2);
+    transition: border-color 0.15s;
+  }
+  .input-area textarea:focus { border-color: var(--teal-mid); }
+  .send-btn {
+    width: 40px; height: 40px;
+    background: var(--teal);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .send-btn:hover { background: var(--teal-mid); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { width: 18px; height: 18px; stroke: white; fill: none; }
+
+  .disclaimer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    padding: 6px 16px 10px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+  <div class="header">
+    <div class="avatar">
+      <svg viewBox="0 0 24 24" stroke-width="1.8">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <div class="header-info">
+      <h1>Asistente de Salud Ocupacional</h1>
+      <p>Clínica médica empresarial · Confidencial</p>
+    </div>
+    <div class="status-dot"></div>
+  </div>
+
+  <div id="welcome-screen" style="
+    position: absolute; inset: 0;
+    background: #f5f3ef;
+    border-radius: 24px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 32px 28px; z-index: 10; text-align: center;
+  ">
+    <div style="width:52px;height:52px;background:#0f6e56;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <h2 style="font-size:17px;font-weight:600;color:#1a1816;margin:0 0 6px;">Asistente de Salud Ocupacional</h2>
+    <p style="font-size:13px;color:#6b6560;margin:0 0 28px;line-height:1.5;">Demo para revisión interna<br>Clínica médica empresarial</p>
+
+    <div style="width:100%;max-width:320px;text-align:left;margin-bottom:8px;">
+      <label style="font-size:12px;color:#6b6560;display:block;margin-bottom:6px;">API Key de Anthropic <span style="color:#9c9590">(para activar respuestas con IA)</span></label>
+      <input id="api-key-input" type="password" placeholder="sk-ant-..." style="
+        width:100%; padding:10px 14px;
+        border:1px solid #e2ddd6; border-radius:10px;
+        font-family:'DM Sans',sans-serif; font-size:13px;
+        color:#1a1816; background:#fff; outline:none;
+        box-sizing:border-box;
+      " onkeydown="if(event.key==='Enter') iniciarDemo()"/>
+    </div>
+    <p style="font-size:11px;color:#9c9590;margin:0 0 20px;">La key no se guarda ni se envía a ningún servidor externo.</p>
+
+    <button onclick="iniciarDemo()" style="
+      width:100%;max-width:320px;
+      padding:11px; background:#0f6e56; color:#fff;
+      border:none; border-radius:10px; font-size:14px;
+      font-family:'DM Sans',sans-serif; font-weight:500;
+      cursor:pointer; transition:background 0.15s;
+    " onmouseover="this.style.background='#1d9e75'" onmouseout="this.style.background='#0f6e56'">
+      Iniciar demo
+    </button>
+    <button onclick="iniciarSinKey()" style="
+      margin-top:10px; background:none; border:none;
+      font-size:12px; color:#9c9590; cursor:pointer;
+      font-family:'DM Sans',sans-serif; text-decoration:underline;
+    ">Continuar sin API key (solo flujos guiados)</button>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <textarea id="userInput" placeholder="Escribe tu mensaje..." rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" onclick="sendUserMessage()">
+      <svg viewBox="0 0 24 24" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="disclaimer">Este asistente no reemplaza la consulta médica. En emergencias llama a los servicios de tu país.</div>
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// CONFIGURACIÓN POR PAÍS
+// ──────────────────────────────────────────────
+const MEDICO_REGIONAL = "Dra. Jackeline López — (502) 4770-1735";
+
+const PAISES = {
+  "Guatemala":           { emergencia: "122 o 123 (Bomberos) / 1500 (IGSS)", enfermeria: null, medico: MEDICO_REGIONAL },
+  "El Salvador":         { emergencia: "911", enfermeria: "Enf. Ruth Paiz — (503) 7797-9079", medico: MEDICO_REGIONAL },
+  "Honduras":            { emergencia: "911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
+  "Nicaragua":           { emergencia: "118 (Cruz Roja) / 911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
+  "Panamá":              { emergencia: "911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
+  "República Dominicana":{ emergencia: "911", enfermeria: "Enf. Eli Rondón — +1 (849) 881-1632", medico: MEDICO_REGIONAL },
+  "Perú":                { emergencia: "116 (SAMU) / 105 (PNP)", enfermeria: "Enf. Alejandra Malpartida — +51 949-834-824", medico: MEDICO_REGIONAL }
+};
+
+// ──────────────────────────────────────────────
+// SITIOS DE GUATEMALA (con enfermera por sitio)
+// ──────────────────────────────────────────────
+const SITIOS_GUATEMALA = {
+  "CDA":                                   { enfermeria: "Enf. Sonia Lorenzo — 4151-2484" },
+  "Planta Escuintla":                      { enfermeria: "Enf. Kristopher Menéndez — 4730-8943" },
+  "Planta San Cristóbal":                  { enfermeria: "Enf. Candy Aguilar — 4152-4711" },
+  "Sitio Roosevelt":                       { enfermeria: "Enf. Candy Aguilar — 4152-4711" },
+  "CDR":                                   { enfermeria: "Enf. Sonia Lorenzo — 4151-2484" },
+  "Sitio Satélites (Colocación y Ventas)": { enfermeria: "Enf. Candy Aguilar — 4152-4711" },
+  "Oficinas":                              { enfermeria: "Enf. Candy Aguilar — 4152-4711" }
+};
+
+// ──────────────────────────────────────────────
+// SIGNOS DE ALARMA
+// ──────────────────────────────────────────────
+const ALARMAS = [
+  "Dolor en el pecho o presión fuerte",
+  "Dificultad para respirar en reposo",
+  "Confusión, desorientación o pérdida del conocimiento",
+  "Debilidad o adormecimiento súbito de brazo, pierna o cara",
+  "Dificultad para hablar o entender",
+  "Sangrado abundante que no cede",
+  "Fiebre muy alta (mayor de 39.5°C) con rigidez de nuca",
+  "Dolor abdominal severo e incapacitante",
+  "Visión doble o pérdida súbita de visión",
+  "Reacción alérgica grave (hinchazón de cara, labios, dificultad para tragar)"
+];
+
+// ──────────────────────────────────────────────
+// DOCUMENTOS POR SUSPENSIÓN
+// ──────────────────────────────────────────────
+const ENTE_SALUD = {
+  "Guatemala": "IGSS", "El Salvador": "ISSS", "Honduras": "IHSS",
+  "Nicaragua": "INSS", "Panamá": "CSS", "República Dominicana": "IDSS/TSS", "Perú": "EsSalud"
+};
+
+// ──────────────────────────────────────────────
+// ESTADO DE CONVERSACIÓN
+// ──────────────────────────────────────────────
+let state = {
+  fase: "bienvenida",
+  pais: null,
+  sitio: null,
+  nombre: null,
+  sistema: null,
+  historial: [] // para la IA
+};
+
+// Helper: obtiene el contacto de enfermería según país y sitio
+function getEnfermeria() {
+  if (state.pais === "Guatemala" && state.sitio) {
+    return SITIOS_GUATEMALA[state.sitio]?.enfermeria || MEDICO_REGIONAL;
+  }
+  return PAISES[state.pais]?.enfermeria || MEDICO_REGIONAL;
+}
+
+// Helper: etiqueta del contacto (enfermería vs médico directo)
+function getLabelContacto() {
+  const paisesConMedico = ["Honduras", "Nicaragua", "Panamá"];
+  if (paisesConMedico.includes(state.pais)) return "Médico Ocupacional";
+  return "Enfermería";
+}
+
+// Prompt del sistema para Claude
+function buildSystemPrompt() {
+  const paisInfo = state.pais ? PAISES[state.pais] : null;
+  const enfermeria = getEnfermeria();
+  return `Eres el Asistente de Salud Ocupacional de una clínica médica empresarial.
+Tu función es orientar a colaboradores de 7 países (Guatemala, El Salvador, Honduras, Nicaragua, Panamá, República Dominicana y Perú) en tres situaciones: síntomas leves/moderados, signos de alarma, y gestión de suspensiones médicas.
+
+REGLAS CRÍTICAS:
+- Responde SIEMPRE en español, de forma empática, clara y breve (máximo 3 párrafos).
+- NUNCA diagnostiques ni recetes medicamentos específicos.
+- Si detectas síntomas de alarma (dolor de pecho, dificultad respiratoria severa, pérdida de conciencia, ACV, sangrado grave), indica de inmediato que es urgente y dé el número de emergencias del país.
+- Para síntomas leves: orienta en autocuidado general (reposo, hidratación, medidas físicas).
+- Para síntomas moderados: recomienda evaluación con el equipo de enfermería o médico.
+- Sé conciso. No hagas listas largas. Máximo 2-3 puntos por respuesta.
+- Si el colaborador pregunta algo fuera del ámbito de salud ocupacional, indica amablemente que solo puedes orientar en temas de salud relacionados con el trabajo.
+
+País del colaborador: ${state.pais || "no indicado"}
+${state.sitio ? `Sitio de trabajo: ${state.sitio}` : ""}
+${paisInfo ? `Número de emergencias: ${paisInfo.emergencia}\nContacto enfermería: ${enfermeria}\nContacto médico: ${paisInfo.medico}` : ""}
+${state.nombre ? `Nombre del colaborador: ${state.nombre}` : ""}
+${state.sistema ? `Sistema reportado: ${state.sistema}` : ""}
+`;
+}
+
+// ──────────────────────────────────────────────
+// LLAMADA A LA API
+// ──────────────────────────────────────────────
+// API KEY DINÁMICA
+// ──────────────────────────────────────────────
+let API_KEY = "";
+
+function iniciarDemo() {
+  const key = document.getElementById("api-key-input").value.trim();
+  if (key) API_KEY = key;
+  document.getElementById("welcome-screen").style.display = "none";
+  iniciarChat();
+}
+
+function iniciarSinKey() {
+  document.getElementById("welcome-screen").style.display = "none";
+  iniciarChat();
+}
+
+function iniciarChat() {
+  addBotMessage("¡Hola! Soy el <b>Asistente de Salud Ocupacional</b> de tu empresa. Puedo orientarte si tienes síntomas, si presentas una situación de alarma o si necesitas gestionar una suspensión médica.");
+  addBotMessage("Primero, ¿en qué país te encuentras?");
+  addChips(Object.keys(PAISES), "seleccionarPais");
+  state.fase = "pais";
+}
+
+// ──────────────────────────────────────────────
+async function callClaude(userText) {
+  state.historial.push({ role: "user", content: userText });
+
+  if (!API_KEY) {
+    const fallback = "Para responder esta consulta necesito la API key de Anthropic. Los flujos guiados con botones siguen funcionando normalmente.";
+    state.historial.push({ role: "assistant", content: fallback });
+    return fallback;
+  }
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": API_KEY, "anthropic-version": "2023-06-01" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      system: buildSystemPrompt(),
+      messages: state.historial
+    })
+  });
+
+  const data = await response.json();
+  const text = data.content?.[0]?.text || "Lo siento, hubo un problema de conexión. Por favor intenta nuevamente.";
+  state.historial.push({ role: "assistant", content: text });
+  return text;
+}
+
+// ──────────────────────────────────────────────
+// RENDER DE MENSAJES
+// ──────────────────────────────────────────────
+function addBotMessage(html, extraHtml = "") {
+  const container = document.getElementById("messages");
+  const row = document.createElement("div");
+  row.className = "msg-row bot";
+  row.innerHTML = `
+    <div class="bot-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <div>
+      <div class="bubble">${html}</div>
+      ${extraHtml}
+    </div>`;
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addUserMessage(text) {
+  const container = document.getElementById("messages");
+  const row = document.createElement("div");
+  row.className = "msg-row user";
+  row.innerHTML = `<div class="bubble">${text}</div>`;
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addChips(opciones, handler, tipo = "") {
+  const container = document.getElementById("messages");
+  const div = document.createElement("div");
+  div.style.paddingLeft = "38px";
+  const chipsId = "chips_" + Date.now();
+  const listId = "opts_" + Date.now();
+  window[listId] = opciones;
+  div.innerHTML = `<div class="chips" id="${chipsId}">${opciones.map((o, i) =>
+    `<button class="chip ${tipo}" onclick="${handler}(window['${listId}'][${i}]); document.getElementById('${chipsId}').parentElement.remove();">${o}</button>`
+  ).join("")}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  const container = document.getElementById("messages");
+  const row = document.createElement("div");
+  row.className = "msg-row bot";
+  row.id = "typing-indicator";
+  row.innerHTML = `
+    <div class="bot-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <div class="bubble typing"><span></span><span></span><span></span></div>`;
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+  return row;
+}
+
+function removeTyping() {
+  const t = document.getElementById("typing-indicator");
+  if (t) t.remove();
+}
+
+// ──────────────────────────────────────────────
+// FLUJOS GUIADOS
+// ──────────────────────────────────────────────
+function seleccionarPais(pais) {
+  state.pais = pais;
+  addUserMessage(pais);
+  if (pais === "Guatemala") {
+    addBotMessage("¿En cuál sitio de trabajo te encuentras?");
+    addChips(Object.keys(SITIOS_GUATEMALA), "seleccionarSitio");
+    state.fase = "sitio";
+  } else {
+    addBotMessage("Gracias. ¿Cuál es tu nombre?");
+    state.fase = "nombre";
+  }
+}
+
+function seleccionarSitio(sitio) {
+  state.sitio = sitio;
+  addUserMessage(sitio);
+  addBotMessage("Gracias. ¿Cuál es tu nombre?");
+  state.fase = "nombre";
+}
+
+function ingresarNombre(nombre) {
+  if (!nombre || nombre.trim() === "") {
+    addBotMessage("Por favor indícame tu nombre para continuar.");
+    return;
+  }
+  state.nombre = nombre.trim();
+  addUserMessage(state.nombre);
+  mostrarMenuPrincipal();
+}
+
+function mostrarMenuPrincipal() {
+  const saludo = state.nombre && state.nombre !== "colaborador/a" ? `, ${state.nombre}` : "";
+  addBotMessage(`Hola${saludo}. ¿En qué puedo orientarte hoy?`);
+  addChips(
+    ["Tengo síntomas", "Creo que es urgente / signo de alarma", "Tengo una suspensión médica"],
+    "seleccionarModulo"
+  );
+  state.fase = "menu";
+}
+
+function seleccionarModulo(opcion) {
+  addUserMessage(opcion);
+  if (opcion === "Tengo síntomas") {
+    iniciarModuloSintomas();
+  } else if (opcion === "Creo que es urgente / signo de alarma") {
+    iniciarModuloAlarma();
+  } else if (opcion === "Tengo una suspensión médica") {
+    iniciarModuloSuspension();
+  }
+}
+
+// ── MÓDULO A: SÍNTOMAS ──
+function iniciarModuloSintomas() {
+  addBotMessage("¿Qué sistema o área de tu cuerpo está afectado?");
+  addChips(
+    [
+      "Respiratorio (tos, gripe, garganta)",
+      "Gastrointestinal (estómago, diarrea, vómito)",
+      "Musculoesquelético (músculos, espalda, articulaciones)",
+      "Oftalmológico (ojos)",
+      "Dermatológico (piel)",
+      "Dolor de oído",
+      "Ginecológico",
+      "Dental",
+      "Urinario"
+    ],
+    "seleccionarSistema"
+  );
+  state.fase = "sistema";
+}
+
+function seleccionarSistema(sistema) {
+  state.sistema = sistema;
+  addUserMessage(sistema);
+  addBotMessage("¿Cuánto tiempo llevas con estos síntomas?");
+  addChips(["Menos de 24 horas", "1 a 3 días", "Más de 3 días"], "seleccionarDuracion");
+}
+
+function seleccionarDuracion(dur) {
+  addUserMessage(dur);
+  addBotMessage("¿Cómo describes la intensidad de lo que sientes?");
+  addChips(["Leve — puedo trabajar con normalidad", "Moderado — me dificulta mis actividades", "Severo — no puedo realizar mis actividades"], "seleccionarIntensidad");
+}
+
+// ──────────────────────────────────────────────
+// PROTOCOLOS CLÍNICOS POR SISTEMA E INTENSIDAD
+// ──────────────────────────────────────────────
+const PROTOCOLOS = {
+  "Respiratorio (tos, gripe, garganta)": {
+    leve: {
+      indicaciones: [
+        "Toma <b>Acetaminofén 1 gramo</b> cada 6 horas por 3 días si tienes fiebre o malestar general.",
+        "Mantente bien hidratado — al menos 2 litros de agua al día.",
+        "Usa mascarilla en tu área de trabajo para proteger a tus compañeros.",
+        "Si tienes tos, puedes tomar <b>Abrilar 1 cucharada</b> cada 8 horas por 5 días.",
+        "Si tienes <b>secreción nasal</b>, toma <b>Clorfeniramina 2 mg</b> una tableta cada 8 horas por 3 días."
+      ],
+      alerta: null
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>Panadol Multisíntomas, Exflú o IRS</b> cada 8 horas por 3 días.",
+        "Mantente bien hidratado y en reposo relativo.",
+        "Si tienes <b>secreción nasal</b>, toma <b>Clorfeniramina 2 mg</b> una tableta cada 8 horas por 3 días.",
+        "Si los síntomas persisten más de 2 días, contáctanos nuevamente."
+      ],
+      alerta: "Si presentas dificultad para respirar o fiebre que no cede con el tratamiento, acude de inmediato a recibir atención médica."
+    },
+    severo: {
+      indicaciones: [
+        "Si tienes <b>secreción nasal</b>, toma <b>Clorfeniramina 2 mg</b> una tableta cada 8 horas por 3 días."
+      ],
+      alerta: "Llama de inmediato a tu enfermera encargada para recibir orientación personalizada."
+    }
+  },
+  "Gastrointestinal (estómago, diarrea, vómito)": {
+    leve: {
+      indicaciones: [
+        "Toma <b>suero oral abundante</b> (Pedialyte, Hidravida o Recover) para mantenerte hidratado.",
+        "Toma <b>Enterogermina o Florenterol</b> cada 12 horas por 5 días.",
+        "Sigue <b>dieta blanda</b>: sin grasas, condimentos, café ni picante."
+      ],
+      alerta: "Si presentas dolor abdominal intenso o vómitos incontrolables, consulta de forma inmediata."
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>suero oral abundante</b> (Pedialyte, Hidravida o Recover).",
+        "Toma <b>Enterogermina o Florenterol</b> cada 12 horas por 5 días.",
+        "Sigue <b>dieta blanda</b>: sin grasas, condimentos, café ni picante.",
+        "Si tienes diarrea abundante, toma <b>Loperamida 2 mg</b> cada 8 horas por 3 días."
+      ],
+      alerta: "Si presentas dolor abdominal intenso o vómitos incontrolables, consulta de forma inmediata."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Comunícate de inmediato con tu enfermera o médico ocupacional. Es probable que necesites atención en un centro de urgencias."
+    }
+  },
+  "Musculoesquelético (músculos, espalda, articulaciones)": {
+    leve: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 5 días.",
+        "Evita levantar cargas pesadas y movimientos bruscos.",
+        "Aplica frío local en el área afectada si hay inflamación."
+      ],
+      alerta: null
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 5 días.",
+        "Reposo relativo y aplica <b>hielo local</b> en el área afectada.",
+      ],
+      alerta: "Si tienes dificultad para movilizarte, llama de inmediato a tu enfermera encargada."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Comunícate de inmediato con tu enfermera o médico ocupacional."
+    }
+  },
+  "Oftalmológico (ojos)": {
+    leve: {
+      indicaciones: [
+        "Evita frotarte los ojos.",
+        "Si usas lentes de contacto, retíralos temporalmente.",
+        "Mantén el área limpia con agua tibia."
+      ],
+      alerta: "Contacta a tu enfermera o médico ocupacional para una evaluación."
+    },
+    moderado: {
+      indicaciones: [],
+      alerta: "Contacta a tu enfermera o médico ocupacional para una evaluación pronta."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Comunícate de inmediato con tu enfermera o médico ocupacional. No demores la atención."
+    }
+  },
+  "Dermatológico (piel)": {
+    leve: {
+      indicaciones: [
+        "Mantén el área limpia y seca.",
+        "Evita rascarte o irritar la zona afectada.",
+        "Evita exposición a productos químicos o irritantes."
+      ],
+      alerta: "Contacta a tu enfermera o médico ocupacional para orientación."
+    },
+    moderado: {
+      indicaciones: [],
+      alerta: "Contacta a tu enfermera o médico ocupacional para una evaluación."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Comunícate de inmediato con tu enfermera o médico ocupacional."
+    }
+  },
+  "Dolor de oído": {
+    leve: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 3 días para el dolor."
+      ],
+      alerta: null
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 3 días.",
+        "Aplica <b>Ciriax Otic 1 gota</b> en el oído afectado cada 8 horas."
+      ],
+      alerta: null
+    },
+    severo: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas."
+      ],
+      alerta: "Consulta al médico para evaluación del oído a la brevedad."
+    }
+  },
+  "Ginecológico": {
+    leve: {
+      indicaciones: [
+        "Si presentas cólicos menstruales, toma <b>Ibuprofén 400 mg</b> una tableta cada 8 horas.",
+        "Coloca un lienzo o bolsa de agua caliente sobre el abdomen para aliviar el dolor.",
+        "Puedes tomar <b>té de manzanilla</b> como antiinflamatorio natural."
+      ],
+      alerta: null
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>Ibuprofén 400 mg</b> cada 8 horas para el dolor.",
+        "Puedes tomar <b>té de manzanilla</b> como antiinflamatorio."
+      ],
+      alerta: "Si además presentas sangrado abundante, comunícate directamente con tu enfermera encargada."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Si presentas sangrado abundante, busca atención médica inmediata."
+    }
+  },
+  "Dental": {
+    leve: {
+      indicaciones: [
+        "Toma <b>Ibuprofén 400 mg</b> cada 8 horas para el dolor mientras buscas atención con tu odontólogo.",
+        "Evita alimentos muy fríos, calientes o duros en el área afectada."
+      ],
+      alerta: null
+    },
+    moderado: {
+      indicaciones: [
+        "Toma <b>Ibuprofén 400 mg</b> cada 8 horas para el dolor.",
+        "Agenda una cita con tu odontólogo a la brevedad posible."
+      ],
+      alerta: null
+    },
+    severo: {
+      indicaciones: [
+        "Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas para el dolor."
+      ],
+      alerta: "Consulta de forma urgente a tu odontólogo."
+    }
+  },
+  "Urinario": {
+    leve: {
+      indicaciones: [
+        "Aumenta tu ingesta de agua — al menos 2 litros al día.",
+        "Evita bebidas irritantes como café, alcohol y refrescos.",
+        "Mantén una buena higiene en el área."
+      ],
+      alerta: "Contacta a tu enfermera o médico ocupacional para orientación."
+    },
+    moderado: {
+      indicaciones: [
+        "Mantente bien hidratado — al menos 2 litros de agua al día.",
+        "Evita café, alcohol y refrescos mientras persistan los síntomas."
+      ],
+      alerta: "Contacta a tu enfermera o médico ocupacional para una evaluación."
+    },
+    severo: {
+      indicaciones: [],
+      alerta: "Comunícate de inmediato con tu enfermera o médico ocupacional."
+    }
+  }
+};
+
+function getNivel(intensidad) {
+  if (intensidad.includes("Leve")) return "leve";
+  if (intensidad.includes("Moderado")) return "moderado";
+  return "severo";
+}
+
+function renderProtocolo(sistema, nivel) {
+  const proto = PROTOCOLOS[sistema]?.[nivel];
+  if (!proto) return null;
+  let html = "";
+  if (proto.indicaciones.length > 0) {
+    html += proto.indicaciones.map(i => `• ${i}`).join("<br>");
+  }
+  return { texto: html, alerta: proto.alerta };
+}
+
+async function seleccionarIntensidad(intensidad) {
+  addUserMessage(intensidad);
+  const nivel = getNivel(intensidad);
+  const esSevero = nivel === "severo";
+  const esModerado = nivel === "moderado";
+  const proto = renderProtocolo(state.sistema, nivel);
+
+  if (proto && proto.texto) {
+    const cardTipo = esSevero ? "alert-card" : esModerado ? "alert-card" : "success-card";
+    let extraHtml = "";
+    if (proto.alerta) {
+      const tipo = esSevero ? "alert-card" : esModerado ? "alert-card" : "success-card";
+      extraHtml = `<div class="${tipo}"><strong>${esSevero || esModerado ? "⚠ Atención" : "Recuerda"}</strong>${proto.alerta}</div>`;
+    }
+    if (esSevero || esModerado) {
+      extraHtml += `<div class="alert-card" style="margin-top:6px"><strong>${getLabelContacto()}</strong><b>${getEnfermeria()}</b></div>`;
+    }
+    addBotMessage(proto.texto, extraHtml);
+  } else {
+    const extraHtml = `<div class="alert-card"><strong>${proto?.alerta ? "⚠ " + proto.alerta : "Contacto recomendado"}</strong>${getLabelContacto()}: <b>${getEnfermeria()}</b></div>`;
+    addBotMessage("Para este nivel de síntomas necesitas orientación directa de nuestro equipo de salud.", extraHtml);
+  }
+  mostrarOpccionFinal();
+}
+
+// ── MÓDULO B: ALARMA ──
+function iniciarModuloAlarma() {
+  const paisInfo = PAISES[state.pais];
+  addBotMessage(
+    "Ante signos de alarma, la acción inmediata es lo más importante. Algunos signos críticos son:",
+    `<div class="alert-card">
+      <strong>🚨 Signos que requieren atención inmediata:</strong>
+      ${ALARMAS.slice(0,5).map(a => `• ${a}`).join("<br>")}
+      <br><br><b>Emergencias ${state.pais}:</b> ${paisInfo.emergencia}<br>
+      <b>Médico de clínica:</b> ${paisInfo.medico}
+    </div>`
+  );
+  addBotMessage("¿Presentas alguno de estos síntomas en este momento?");
+  addChips(["Sí, presento uno o más de estos síntomas", "No, pero tengo otro síntoma preocupante"], "respuestaAlarma", "danger");
+}
+
+async function respuestaAlarma(respuesta) {
+  addUserMessage(respuesta);
+  const paisInfo = PAISES[state.pais];
+
+  if (respuesta.startsWith("Sí")) {
+    addBotMessage(
+      `<b>Esto requiere atención médica inmediata.</b> No esperes.`,
+      `<div class="alert-card">
+        <strong>🚨 Llama ahora mismo</strong>
+        <b>Emergencias ${state.pais}:</b> ${paisInfo.emergencia}<br>
+        <b>Médico de clínica:</b> ${paisInfo.medico}<br>
+        <b>${getLabelContacto()}:</b> ${getEnfermeria()}<br><br>
+        Si estás solo/a, avisa a un compañero que esté cerca de ti.
+      </div>`
+    );
+  } else {
+    addBotMessage("Cuéntame qué síntoma te preocupa y lo evaluamos juntos.");
+    state.fase = "libre";
+  }
+  mostrarOpccionFinal();
+}
+
+// ── MÓDULO C: SUSPENSIÓN ──
+function iniciarModuloSuspension() {
+  const ente = ENTE_SALUD[state.pais] || "el seguro social de tu país";
+  addBotMessage(`Entendido. Te guío paso a paso para gestionar correctamente tu suspensión médica en ${state.pais}.`);
+
+  setTimeout(() => {
+    addBotMessage(
+      `<b>Paso 1 — Notifica a tu líder</b><br>Informa a tu líder directo sobre tu suspensión para que pueda organizarse en tu área de trabajo.`,
+      `<div class="info-card"><strong>¿Por qué es importante?</strong>Tu líder necesita saberlo para cubrir tus funciones y registrar tu ausencia correctamente.</div>`
+    );
+  }, 400);
+
+  setTimeout(() => {
+    addBotMessage(
+      `<b>Paso 2 — Envía tu suspensión al área de salud</b><br>Remite tu constancia de suspensión a la enfermera o médico de tu sitio.`,
+      `<div class="info-card"><strong>${getLabelContacto()} de tu sitio</strong>${getEnfermeria()}</div>`
+    );
+  }, 800);
+
+  setTimeout(() => {
+    addBotMessage(
+      `<b>Paso 3 — Notifica a tu KAM de Gestión Humana</b><br>Informa a tu KAM para que registre la suspensión y notifique al área de nómina.`
+    );
+  }, 1200);
+
+  setTimeout(() => {
+    addBotMessage(
+      `<b>Tipos de suspensión válidos</b>`,
+      `<div class="info-card">
+        <strong>Suspensión del seguro social (${ente})</strong>
+        Es la más común y válida. Solo preséntala al área de salud y a tu KAM.<br><br>
+        <strong>Suspensión de médico particular</strong>
+        Solo es válida si la constancia tiene <b>firma y sello de colegiado activo</b>. Debes enviarla al área de salud de tu sitio para que sea validada por nuestro Médico de PDC.
+      </div>`
+    );
+  }, 1600);
+
+  setTimeout(() => {
+    addBotMessage(
+      `¿Tu suspensión fue emitida por el seguro social (${ente}) o por un médico particular?`
+    );
+    addChips(
+      [`Por el ${ente} (seguro social)`, "Por médico particular", "Tengo otra duda"],
+      "respuestaTipoSuspension"
+    );
+  }, 2000);
+}
+
+function respuestaTipoSuspension(tipo) {
+  addUserMessage(tipo);
+  const ente = ENTE_SALUD[state.pais] || "seguro social";
+
+  if (tipo.includes("seguro social") || tipo.includes(ente)) {
+    addBotMessage(
+      `Perfecto. Tu suspensión del <b>${ente}</b> es válida directamente.`,
+      `<div class="success-card">
+        <strong>Resumen de lo que debes hacer</strong>
+        1. Notifica a tu <b>líder directo</b>.<br>
+        2. Envía la constancia a <b>${getLabelContacto()}: ${getEnfermeria()}</b>.<br>
+        3. Notifica a tu <b>KAM de Gestión Humana</b> para el registro en nómina.
+      </div>`
+    );
+  } else if (tipo.includes("particular")) {
+    addBotMessage(
+      `Las suspensiones de médico particular requieren un paso adicional.`,
+      `<div class="alert-card">
+        <strong>⚠ Requisito para suspensiones particulares</strong>
+        La constancia debe tener <b>firma y sello de colegiado activo</b> del médico.<br><br>
+        Envíala al área de salud de tu sitio para validación por nuestro Médico de PDC:<br>
+        <b>${getLabelContacto()}: ${getEnfermeria()}</b>
+      </div>`
+    );
+    addBotMessage(
+      `Una vez validada, sigue los mismos pasos:`,
+      `<div class="success-card">
+        <strong>Pasos a seguir</strong>
+        1. Notifica a tu <b>líder directo</b>.<br>
+        2. Envía la constancia a validar a <b>${getLabelContacto()}</b>.<br>
+        3. Notifica a tu <b>KAM de Gestión Humana</b> cuando esté validada.
+      </div>`
+    );
+  } else {
+    addBotMessage("Con gusto te ayudo. Cuéntame cuál es tu duda sobre la suspensión.");
+    state.fase = "libre";
+    return;
+  }
+  mostrarOpccionFinal();
+}
+
+// ── CIERRE ──
+function mostrarOpccionFinal() {
+  setTimeout(() => {
+    addBotMessage("¿Hay algo más en lo que pueda orientarte?");
+    addChips(["Tengo otra consulta", "Eso es todo, gracias"], "cierreConversacion");
+  }, 600);
+}
+
+function cierreConversacion(opcion) {
+  addUserMessage(opcion);
+  if (opcion.includes("otra consulta")) {
+    mostrarMenuPrincipal();
+  } else {
+    addBotMessage("Que te mejores pronto. Recuerda que estamos aquí cuando nos necesites. ¡Cuídate mucho! 💚");
+    state.fase = "cerrado";
+  }
+}
+
+// ──────────────────────────────────────────────
+// INPUT LIBRE (para modo IA)
+// ──────────────────────────────────────────────
+async function sendUserMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  input.style.height = "auto";
+
+  addUserMessage(text);
+
+  // Fases guiadas
+  if (state.fase === "nombre") {
+    ingresarNombre(text);
+    return;
+  }
+
+  if (state.fase === "cerrado") {
+    addBotMessage("Sesión cerrada. Recarga la página para iniciar una nueva consulta.");
+    return;
+  }
+
+  // Modo IA libre
+  const typing = showTyping();
+  try {
+    const respuesta = await callClaude(text);
+    removeTyping();
+    addBotMessage(respuesta);
+  } catch (e) {
+    removeTyping();
+    addBotMessage("Hubo un problema de conexión. Por favor intenta de nuevo.");
+  }
+}
+
+function handleKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendUserMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = "auto";
+  el.style.height = Math.min(el.scrollHeight, 100) + "px";
+}
+
+// ──────────────────────────────────────────────
+// INICIO
+// ──────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("api-key-input").focus();
+});
+</script>
+</body>
+</html>
