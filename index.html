@@ -249,7 +249,7 @@ function seleccionarModulo(opcion) {
 
 function iniciarModuloSintomas() {
   addBotMessage("Que sistema o area de tu cuerpo esta afectado?");
-  addChips(["Respiratorio (tos, gripe, garganta)","Gastrointestinal (estomago, diarrea, vomito)","Musculoesqueletico (musculos, espalda, articulaciones)","Oftalmologico (ojos)","Dermatologico (piel)","Dolor de oido","Ginecologico","Dental","Urinario"],"seleccionarSistema");
+  addChips(["Respiratorio (tos, gripe, garganta)","Gastrointestinal (estomago, diarrea, vomito)","Dolor abdominal","Musculoesqueletico (musculos, espalda, articulaciones)","Oftalmologico (ojos)","Dermatologico (piel)","Dolor de oido","Ginecologico","Dental","Urinario"],"seleccionarSistema");
   state.fase="sistema";
 }
 function seleccionarSistema(s) { state.sistema=s; addUserMessage(s); addBotMessage("Cuanto tiempo llevas con estos sintomas?"); addChips(["Menos de 24 horas","1 a 3 dias","Mas de 3 dias"],"seleccionarDuracion"); }
@@ -295,6 +295,11 @@ const PROTOCOLOS = {
     leve:{ indicaciones:["Toma <b>Ibuprofen 400 mg</b> cada 8 horas mientras buscas atencion con tu odontologo.","Evita alimentos muy frios, calientes o duros."], alerta:null },
     moderado:{ indicaciones:["Toma <b>Ibuprofen 400 mg</b> cada 8 horas.","Agenda una cita con tu odontologo a la brevedad."], alerta:null },
     severo:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas."], alerta:"Consulta de forma urgente a tu odontologo." }
+  },
+  "Dolor abdominal": {
+    leve:{ indicaciones:["Toma <b>te de manzanilla</b> para aliviar el malestar.","Puedes colocar una <b>bolsa de agua caliente</b> sobre tu vientre.","No consumas grasas ni alimentos pesados.","Observa si aparece algun otro sintoma."], alerta:null },
+    moderado:{ indicaciones:[], alerta:"Llama de inmediato al area de salud." },
+    severo:{ indicaciones:[], alerta:"Consulta de forma inmediata a la emergencia del Seguro Social de tu pais." }
   },
   "Urinario": {
     leve:{ indicaciones:["Aumenta tu ingesta de agua - al menos 2 litros al dia.","Evita cafe, alcohol y refrescos.","Mantén buena higiene en el area."], alerta:"Contacta a tu enfermera o medico ocupacional." },
