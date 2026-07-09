@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Asistente de Salud Ocupacional</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"><style>
   :root {
     --bg: #f5f3ef; --surface: #ffffff; --surface2: #f0ede7;
     --border: #e2ddd6; --text: #1a1816; --text2: #6b6560; --text3: #9c9590;
@@ -58,7 +57,6 @@
   .send-btn:active { transform: scale(0.95); }
   .send-btn svg { width: 18px; height: 18px; stroke: white; fill: none; }
   .disclaimer { text-align: center; font-size: 11px; color: var(--text3); padding: 6px 16px 10px; line-height: 1.4; }
-  /* Panel Admin */
   #admin-panel { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; display:none; align-items:center; justify-content:center; }
   #admin-panel.open { display:flex; }
   .admin-box { background:#fff; border-radius:16px; width:90%; max-width:620px; max-height:90vh; overflow-y:auto; padding:24px; box-shadow:0 8px 40px rgba(0,0,0,0.2); }
@@ -80,14 +78,13 @@
   .admin-group h4 { font-size:13px; font-weight:600; color:var(--text); margin-bottom:10px; }
   .admin-trigger { position:fixed; bottom:16px; right:16px; background:var(--teal); color:#fff; border:none; border-radius:50%; width:36px; height:36px; font-size:18px; cursor:pointer; z-index:50; box-shadow:var(--shadow); }
 </style>
-</head>
-<body>
+</head><body>
 <div class="chat-wrapper">
   <div class="header">
     <div class="avatar"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
     <div class="header-info">
       <h1>Asistente de Salud Ocupacional</h1>
-      <p>Clínica médica empresarial · Confidencial</p>
+      <p>Clinica medica empresarial · Confidencial</p>
     </div>
     <div class="status-dot"></div>
   </div>
@@ -97,12 +94,12 @@
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
     </div>
     <h2 style="font-size:17px;font-weight:600;color:#1a1816;margin:0 0 6px;">Asistente de Salud Ocupacional</h2>
-    <p style="font-size:13px;color:#6b6560;margin:0 0 28px;line-height:1.5;">Clínica médica empresarial</p>
+    <p style="font-size:13px;color:#6b6560;margin:0 0 28px;line-height:1.5;">Clinica medica empresarial</p>
     <div style="width:100%;max-width:320px;text-align:left;margin-bottom:8px;">
       <label style="font-size:12px;color:#6b6560;display:block;margin-bottom:6px;">API Key de Anthropic <span style="color:#9c9590">(para activar respuestas con IA)</span></label>
       <input id="api-key-input" type="password" placeholder="sk-ant-..." style="width:100%;padding:10px 14px;border:1px solid #e2ddd6;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;color:#1a1816;background:#fff;outline:none;box-sizing:border-box;" onkeydown="if(event.key==='Enter') iniciarDemo()"/>
     </div>
-    <p style="font-size:11px;color:#9c9590;margin:0 0 20px;">La key no se guarda ni se envía a ningún servidor externo.</p>
+    <p style="font-size:11px;color:#9c9590;margin:0 0 20px;">La key no se guarda ni se envia a ningun servidor externo.</p>
     <button onclick="iniciarDemo()" style="width:100%;max-width:320px;padding:11px;background:#0f6e56;color:#fff;border:none;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;" onmouseover="this.style.background='#1d9e75'" onmouseout="this.style.background='#0f6e56'">Iniciar</button>
     <button onclick="iniciarSinKey()" style="margin-top:10px;background:none;border:none;font-size:12px;color:#9c9590;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;">Continuar sin API key (solo flujos guiados)</button>
   </div>
@@ -114,36 +111,31 @@
       <svg viewBox="0 0 24 24" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
   </div>
-  <div class="disclaimer">Este asistente no reemplaza la consulta médica. En emergencias llama a los servicios de tu país.</div>
+  <div class="disclaimer">Este asistente no reemplaza la consulta medica. En emergencias llama a los servicios de tu pais.</div>
 </div>
 
-<!-- Botón trigger admin -->
-<button class="admin-trigger" onclick="abrirLoginAdmin()" title="Administración">⚙</button>
+<button class="admin-trigger" onclick="abrirLoginAdmin()" title="Administracion">&#9881;</button>
 
-<!-- Login admin -->
 <div id="admin-login" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:16px;padding:28px;width:90%;max-width:320px;text-align:center;">
-    <h3 style="font-size:15px;font-weight:600;color:var(--teal);margin-bottom:16px;">Panel de Administración</h3>
-    <input id="admin-pwd" type="password" placeholder="Contraseña" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;" onkeydown="if(event.key==='Enter') verificarAdmin()"/>
-    <p id="admin-error" style="font-size:12px;color:var(--red);display:none;margin-bottom:8px;">Contraseña incorrecta</p>
-    <button onclick="verificarAdmin()" style="width:100%;padding:10px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;">Ingresar</button>
-    <button onclick="cerrarLoginAdmin()" style="margin-top:8px;background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+    <h3 style="font-size:15px;font-weight:600;color:#0f6e56;margin-bottom:16px;">Panel de Administracion</h3>
+    <input id="admin-pwd" type="password" placeholder="Contrasena" style="width:100%;padding:10px 14px;border:1px solid #e2ddd6;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;" onkeydown="if(event.key==='Enter') verificarAdmin()"/>
+    <p id="admin-error" style="font-size:12px;color:#a32d2d;display:none;margin-bottom:8px;">Contrasena incorrecta</p>
+    <button onclick="verificarAdmin()" style="width:100%;padding:10px;background:#0f6e56;color:#fff;border:none;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;">Ingresar</button>
+    <button onclick="cerrarLoginAdmin()" style="margin-top:8px;background:none;border:none;font-size:12px;color:#9c9590;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
   </div>
 </div>
 
-<!-- Panel admin -->
 <div id="admin-panel">
   <div class="admin-box">
-    <h2>Panel de Administración <button class="admin-close" onclick="cerrarAdmin()">×</button></h2>
+    <h2>Panel de Administracion <button class="admin-close" onclick="cerrarAdmin()">x</button></h2>
     <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchTab('protocolos')">Protocolos</button>
-      <button class="admin-tab" onclick="switchTab('contactos')">Contactos</button>
+      <button class="admin-tab active" onclick="switchTab('protocolos',this)">Protocolos</button>
+      <button class="admin-tab" onclick="switchTab('contactos',this)">Contactos</button>
     </div>
-
-    <!-- PROTOCOLOS -->
     <div id="tab-protocolos" class="admin-section active">
       <div class="admin-field">
-        <label>Selecciona el sistema a editar</label>
+        <label>Sistema</label>
         <select id="admin-sistema-sel" onchange="cargarProtocolo()"></select>
       </div>
       <div class="admin-field">
@@ -155,39 +147,37 @@
         </select>
       </div>
       <div class="admin-field">
-        <label>Indicaciones (una por línea)</label>
-        <textarea id="admin-indicaciones" placeholder="Escribe cada indicación en una línea separada..."></textarea>
+        <label>Indicaciones (una por linea)</label>
+        <textarea id="admin-indicaciones" placeholder="Escribe cada indicacion en una linea separada..."></textarea>
       </div>
       <div class="admin-field">
-        <label>Alerta / mensaje de atención (dejar vacío si no aplica)</label>
-        <input id="admin-alerta" type="text" placeholder="Ej: Consulta al médico si..."/>
+        <label>Alerta (dejar vacio si no aplica)</label>
+        <input id="admin-alerta" type="text"/>
       </div>
       <button class="admin-save" onclick="guardarProtocolo()">Guardar cambios</button>
-      <p id="proto-msg" style="font-size:12px;color:var(--teal);margin-top:8px;display:none;">✓ Guardado correctamente</p>
+      <p id="proto-msg" style="font-size:12px;color:#0f6e56;margin-top:8px;display:none;">Guardado correctamente</p>
     </div>
-
-    <!-- CONTACTOS -->
     <div id="tab-contactos" class="admin-section">
       <div class="admin-group">
-        <h4>Médico Regional</h4>
+        <h4>Medico Regional</h4>
         <div class="admin-field">
-          <label>Nombre y teléfono</label>
+          <label>Nombre y telefono</label>
           <input id="admin-medico-regional" type="text"/>
         </div>
       </div>
       <div class="admin-group">
-        <h4>Contactos por país</h4>
+        <h4>Contactos por pais</h4>
         <div class="admin-field">
-          <label>País</label>
+          <label>Pais</label>
           <select id="admin-pais-sel" onchange="cargarContactoPais()"></select>
         </div>
         <div class="admin-field">
-          <label>Número de emergencias</label>
+          <label>Numero de emergencias</label>
           <input id="admin-emergencia" type="text"/>
         </div>
         <div class="admin-field">
-          <label>Contacto de enfermería / médico</label>
-          <input id="admin-enfermeria-pais" type="text" placeholder="Dejar vacío si usa el médico regional"/>
+          <label>Contacto de enfermeria</label>
+          <input id="admin-enfermeria-pais" type="text"/>
         </div>
       </div>
       <div class="admin-group">
@@ -197,424 +187,248 @@
           <select id="admin-sitio-sel" onchange="cargarContactoSitio()"></select>
         </div>
         <div class="admin-field">
-          <label>Contacto de enfermería</label>
+          <label>Contacto de enfermeria</label>
           <input id="admin-enfermeria-sitio" type="text"/>
         </div>
       </div>
       <button class="admin-save" onclick="guardarContactos()">Guardar contactos</button>
-      <p id="contacto-msg" style="font-size:12px;color:var(--teal);margin-top:8px;display:none;">✓ Guardado correctamente</p>
+      <p id="contacto-msg" style="font-size:12px;color:#0f6e56;margin-top:8px;display:none;">Guardado correctamente</p>
     </div>
   </div>
-</div>
-
-<script>
-// ── ADMIN ──
+</div><script>
 const ADMIN_PWD = "Codisa280323*";
-
-function abrirLoginAdmin() {
-  document.getElementById("admin-login").style.display = "flex";
-  document.getElementById("admin-pwd").value = "";
-  document.getElementById("admin-error").style.display = "none";
-  setTimeout(()=>document.getElementById("admin-pwd").focus(), 100);
-}
-function cerrarLoginAdmin() { document.getElementById("admin-login").style.display = "none"; }
-function verificarAdmin() {
-  const pwd = document.getElementById("admin-pwd").value;
-  if (pwd === ADMIN_PWD) {
-    cerrarLoginAdmin();
-    abrirAdmin();
-  } else {
-    document.getElementById("admin-error").style.display = "block";
-  }
-}
-function abrirAdmin() {
-  inicializarAdmin();
-  document.getElementById("admin-panel").classList.add("open");
-}
-function cerrarAdmin() { document.getElementById("admin-panel").classList.remove("open"); }
-
-function switchTab(tab) {
-  document.querySelectorAll(".admin-tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".admin-section").forEach(s=>s.classList.remove("active"));
-  event.target.classList.add("active");
-  document.getElementById("tab-"+tab).classList.add("active");
-}
-
-function inicializarAdmin() {
-  // Llenar selector de sistemas
-  const sel = document.getElementById("admin-sistema-sel");
-  sel.innerHTML = Object.keys(PROTOCOLOS).map(s=>`<option value="${s}">${s}</option>`).join("");
-  cargarProtocolo();
-  // Llenar selector de países
-  const pSel = document.getElementById("admin-pais-sel");
-  pSel.innerHTML = Object.keys(PAISES).map(p=>`<option value="${p}">${p}</option>`).join("");
-  cargarContactoPais();
-  // Llenar selector de sitios
-  const sSel = document.getElementById("admin-sitio-sel");
-  sSel.innerHTML = Object.keys(SITIOS_GUATEMALA).map(s=>`<option value="${s}">${s}</option>`).join("");
-  cargarContactoSitio();
-  // Médico regional
-  document.getElementById("admin-medico-regional").value = MEDICO_REGIONAL;
-}
-
-function cargarProtocolo() {
-  const sistema = document.getElementById("admin-sistema-sel").value;
-  const nivel = document.getElementById("admin-nivel-sel").value;
-  const proto = PROTOCOLOS[sistema]?.[nivel];
-  if (proto) {
-    document.getElementById("admin-indicaciones").value = proto.indicaciones.map(i=>i.replace(/<b>|<\/b>/g,"")).join("\n");
-    document.getElementById("admin-alerta").value = proto.alerta || "";
-  }
-}
-
-function guardarProtocolo() {
-  const sistema = document.getElementById("admin-sistema-sel").value;
-  const nivel = document.getElementById("admin-nivel-sel").value;
-  const indicacionesRaw = document.getElementById("admin-indicaciones").value.trim().split("\n").filter(l=>l.trim()!=="");
-  const alerta = document.getElementById("admin-alerta").value.trim();
-  if (!PROTOCOLOS[sistema]) PROTOCOLOS[sistema] = {};
-  PROTOCOLOS[sistema][nivel] = { indicaciones: indicacionesRaw, alerta: alerta || null };
-  const msg = document.getElementById("proto-msg");
-  msg.style.display = "block";
-  setTimeout(()=>msg.style.display="none", 2500);
-}
-
-function cargarContactoPais() {
-  const pais = document.getElementById("admin-pais-sel").value;
-  const info = PAISES[pais];
-  document.getElementById("admin-emergencia").value = info?.emergencia || "";
-  document.getElementById("admin-enfermeria-pais").value = info?.enfermeria || "";
-}
-
-function cargarContactoSitio() {
-  const sitio = document.getElementById("admin-sitio-sel").value;
-  document.getElementById("admin-enfermeria-sitio").value = SITIOS_GUATEMALA[sitio]?.enfermeria || "";
-}
-
-function guardarContactos() {
-  // Médico regional
-  const nuevoMedico = document.getElementById("admin-medico-regional").value.trim();
-  if (nuevoMedico) window.MEDICO_REGIONAL_ACTUAL = nuevoMedico;
-
-  // País seleccionado
-  const pais = document.getElementById("admin-pais-sel").value;
-  PAISES[pais].emergencia = document.getElementById("admin-emergencia").value.trim();
-  const enfPais = document.getElementById("admin-enfermeria-pais").value.trim();
-  PAISES[pais].enfermeria = enfPais || null;
-
-  // Sitio Guatemala
-  const sitio = document.getElementById("admin-sitio-sel").value;
-  SITIOS_GUATEMALA[sitio].enfermeria = document.getElementById("admin-enfermeria-sitio").value.trim();
-
-  const msg = document.getElementById("contacto-msg");
-  msg.style.display = "block";
-  setTimeout(()=>msg.style.display="none", 2500);
-}
-</script>
 const POWER_AUTOMATE_URL = "https://default1b352d1f7b4347e292d1b1b6b563c0.05.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/56818e96b0ec4c00b08e68a267a4459d/triggers/manual/paths/invoke?api-version=1";
 
 async function registrarConsulta(datos) {
-  try {
-    await fetch(POWER_AUTOMATE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos)
-    });
-  } catch (e) {
-    console.warn("No se pudo registrar:", e);
-  }
+  try { await fetch(POWER_AUTOMATE_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(datos) }); }
+  catch(e) { console.warn("No se pudo registrar:", e); }
 }
 
-const MEDICO_REGIONAL = "Dra. Jackeline Lopez - (502) 4770-1735";
+let MEDICO_REGIONAL = "Dra. Jackeline Lopez - (502) 4770-1735";
 const PAISES = {
-  "Guatemala":            { emergencia: "122 o 123 (Bomberos) / 1500 (IGSS)", enfermeria: null, medico: MEDICO_REGIONAL },
-  "El Salvador":          { emergencia: "911", enfermeria: "Enf. Ruth Paiz - (503) 7797-9079", medico: MEDICO_REGIONAL },
-  "Honduras":             { emergencia: "911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
-  "Nicaragua":            { emergencia: "118 (Cruz Roja) / 911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
-  "Panama":               { emergencia: "911", enfermeria: MEDICO_REGIONAL, medico: MEDICO_REGIONAL },
-  "Republica Dominicana": { emergencia: "911", enfermeria: "Enf. Eli Rondon - +1 (849) 881-1632", medico: MEDICO_REGIONAL },
-  "Peru":                 { emergencia: "116 (SAMU) / 105 (PNP)", enfermeria: "Enf. Alejandra Malpartida - +51 949-834-824", medico: MEDICO_REGIONAL }
+  "Guatemala":            { emergencia:"122 o 123 (Bomberos) / 1500 (IGSS)", enfermeria:null, medico:MEDICO_REGIONAL },
+  "El Salvador":          { emergencia:"911", enfermeria:"Enf. Ruth Paiz - (503) 7797-9079", medico:MEDICO_REGIONAL },
+  "Honduras":             { emergencia:"911", enfermeria:MEDICO_REGIONAL, medico:MEDICO_REGIONAL },
+  "Nicaragua":            { emergencia:"118 (Cruz Roja) / 911", enfermeria:MEDICO_REGIONAL, medico:MEDICO_REGIONAL },
+  "Panama":               { emergencia:"911", enfermeria:MEDICO_REGIONAL, medico:MEDICO_REGIONAL },
+  "Republica Dominicana": { emergencia:"911", enfermeria:"Enf. Eli Rondon - +1 (849) 881-1632", medico:MEDICO_REGIONAL },
+  "Peru":                 { emergencia:"116 (SAMU) / 105 (PNP)", enfermeria:"Enf. Alejandra Malpartida - +51 949-834-824", medico:MEDICO_REGIONAL }
 };
 const SITIOS_GUATEMALA = {
-  "CDA":                { enfermeria: "Enf. Sonia Lorenzo - 4151-2484" },
-  "Planta Escuintla":   { enfermeria: "Enf. Kristopher Menendez - 4730-8943" },
-  "Planta San Cristobal":{ enfermeria: "Enf. Candy Aguilar - 4152-4711" },
-  "Sitio Roosevelt":    { enfermeria: "Enf. Candy Aguilar - 4152-4711" },
-  "CDR":                { enfermeria: "Enf. Sonia Lorenzo - 4151-2484" },
-  "Sitio Satelites":    { enfermeria: "Enf. Candy Aguilar - 4152-4711" },
-  "Oficinas":           { enfermeria: "Enf. Candy Aguilar - 4152-4711" }
+  "CDA":                 { enfermeria:"Enf. Sonia Lorenzo - 4151-2484" },
+  "Planta Escuintla":    { enfermeria:"Enf. Kristopher Menendez - 4730-8943" },
+  "Planta San Cristobal":{ enfermeria:"Enf. Candy Aguilar - 4152-4711" },
+  "Sitio Roosevelt":     { enfermeria:"Enf. Candy Aguilar - 4152-4711" },
+  "CDR":                 { enfermeria:"Enf. Sonia Lorenzo - 4151-2484" },
+  "Sitio Satelites":     { enfermeria:"Enf. Candy Aguilar - 4152-4711" },
+  "Oficinas":            { enfermeria:"Enf. Candy Aguilar - 4152-4711" }
 };
 const ALARMAS = [
   "Dolor en el pecho o presion fuerte","Dificultad para respirar en reposo",
-  "Confusion, desorientacion o perdida del conocimiento","Debilidad o adormecimiento subito de brazo, pierna o cara",
-  "Dificultad para hablar o entender","Sangrado abundante que no cede",
-  "Fiebre muy alta (mayor de 39.5C) con rigidez de nuca","Dolor abdominal severo e incapacitante",
-  "Vision doble o perdida subita de vision","Reaccion alergica grave (hinchazon de cara, labios, dificultad para tragar)"
+  "Confusion o perdida del conocimiento","Debilidad subita de brazo, pierna o cara",
+  "Dificultad para hablar","Sangrado abundante que no cede",
+  "Fiebre mayor de 39.5C con rigidez de nuca","Dolor abdominal severo e incapacitante",
+  "Vision doble o perdida subita de vision","Reaccion alergica grave"
 ];
 const ENTE_SALUD = {
   "Guatemala":"IGSS","El Salvador":"ISSS","Honduras":"IHSS",
   "Nicaragua":"INSS","Panama":"CSS","Republica Dominicana":"IDSS/TSS","Peru":"EsSalud"
 };
 
-let state = { fase:"bienvenida", pais:null, sitio:null, nombre:null, sistema:null, modulo:null, intensidad:null, referido:false, historial:[] };
-let API_KEY = "";
-
-function getEnfermeria() {
-  if (state.pais === "Guatemala" && state.sitio) return SITIOS_GUATEMALA[state.sitio]?.enfermeria || MEDICO_REGIONAL;
-  return PAISES[state.pais]?.enfermeria || MEDICO_REGIONAL;
-}
-function getLabelContacto() {
-  return ["Honduras","Nicaragua","Panama"].includes(state.pais) ? "Medico Ocupacional" : "Enfermeria";
-}
-function buildSystemPrompt() {
-  const paisInfo = state.pais ? PAISES[state.pais] : null;
-  return `Eres el Asistente de Salud Ocupacional de una clinica medica empresarial. Orientas colaboradores de 7 paises en sintomas, signos de alarma y suspensiones medicas. Responde SIEMPRE en espanol, empatico, breve (max 3 parrafos). NUNCA diagnostiques ni recetes. Si hay alarma, indica urgencia y numero de emergencias. Para leve: autocuidado. Para moderado: enfermeria o medico. Max 2-3 puntos. Pais: ${state.pais||"no indicado"} ${state.sitio?"Sitio: "+state.sitio:""} ${paisInfo?"Emergencias: "+paisInfo.emergencia+"\nEnfermeria: "+getEnfermeria():""} ${state.nombre?"Nombre: "+state.nombre:""} ${state.sistema?"Sistema: "+state.sistema:""}`;
-}
-
-function iniciarDemo() {
-  const key = document.getElementById("api-key-input").value.trim();
-  if (key) API_KEY = key;
-  document.getElementById("welcome-screen").style.display = "none";
-  iniciarChat();
-}
-function iniciarSinKey() {
-  document.getElementById("welcome-screen").style.display = "none";
-  iniciarChat();
-}
-function iniciarChat() {
-  addBotMessage("Hola! Soy el <b>Asistente de Salud Ocupacional</b> de tu empresa. Puedo orientarte si tienes sintomas, una situacion de alarma o necesitas gestionar una suspension medica.");
-  addBotMessage("Primero, en que pais te encuentras?");
-  addChips(Object.keys(PAISES), "seleccionarPais");
-  state.fase = "pais";
-}
-async function callClaude(userText) {
-  state.historial.push({ role:"user", content:userText });
-  if (!API_KEY) {
-    const f = "Para responder esta consulta necesito la API key. Los flujos guiados siguen funcionando.";
-    state.historial.push({ role:"assistant", content:f });
-    return f;
-  }
-  const r = await fetch("https://api.anthropic.com/v1/messages", {
-    method:"POST",
-    headers:{"Content-Type":"application/json","x-api-key":API_KEY,"anthropic-version":"2023-06-01"},
-    body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, system:buildSystemPrompt(), messages:state.historial })
-  });
-  const d = await r.json();
-  const t = d.content?.[0]?.text || "Hubo un problema de conexion.";
-  state.historial.push({ role:"assistant", content:t });
-  return t;
-}
-
-function addBotMessage(html, extraHtml="") {
-  const c = document.getElementById("messages");
-  const row = document.createElement("div");
-  row.className = "msg-row bot";
-  row.innerHTML = `<div class="bot-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="bubble">${html}</div>${extraHtml}</div>`;
-  c.appendChild(row); c.scrollTop = c.scrollHeight;
-}
-function addUserMessage(text) {
-  const c = document.getElementById("messages");
-  const row = document.createElement("div");
-  row.className = "msg-row user";
-  row.innerHTML = `<div class="bubble">${text}</div>`;
-  c.appendChild(row); c.scrollTop = c.scrollHeight;
-}
-function addChips(opciones, handler, tipo="") {
-  const c = document.getElementById("messages");
-  const div = document.createElement("div");
-  div.style.paddingLeft = "38px";
-  const cid = "chips_"+Date.now(), lid = "opts_"+Date.now();
-  window[lid] = opciones;
-  div.innerHTML = `<div class="chips" id="${cid}">${opciones.map((o,i)=>`<button class="chip ${tipo}" onclick="${handler}(window['${lid}'][${i}]);document.getElementById('${cid}').parentElement.remove();">${o}</button>`).join("")}</div>`;
-  c.appendChild(div); c.scrollTop = c.scrollHeight;
-}
-function showTyping() {
-  const c = document.getElementById("messages");
-  const row = document.createElement("div");
-  row.className = "msg-row bot"; row.id = "typing-indicator";
-  row.innerHTML = `<div class="bot-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="bubble typing"><span></span><span></span><span></span></div>`;
-  c.appendChild(row); c.scrollTop = c.scrollHeight;
-}
-function removeTyping() { const t = document.getElementById("typing-indicator"); if(t) t.remove(); }
-
-function seleccionarPais(pais) {
-  state.pais = pais; addUserMessage(pais);
-  if (pais === "Guatemala") { addBotMessage("En cual sitio de trabajo te encuentras?"); addChips(Object.keys(SITIOS_GUATEMALA),"seleccionarSitio"); state.fase="sitio"; }
-  else { addBotMessage("Gracias. Cual es tu nombre?"); state.fase="nombre"; }
-}
-function seleccionarSitio(sitio) { state.sitio=sitio; addUserMessage(sitio); addBotMessage("Gracias. Cual es tu nombre?"); state.fase="nombre"; }
-function ingresarNombre(nombre) {
-  if (!nombre||nombre.trim()==="") { addBotMessage("Por favor indicame tu nombre para continuar."); return; }
-  state.nombre=nombre.trim(); addUserMessage(state.nombre); mostrarMenuPrincipal();
-}
-function mostrarMenuPrincipal() {
-  const s = state.nombre ? `, ${state.nombre}` : "";
-  addBotMessage(`Hola${s}. En que puedo orientarte hoy?`);
-  addChips(["Tengo sintomas","Creo que es urgente / signo de alarma","Tengo una suspension medica"],"seleccionarModulo");
-  state.fase="menu";
-}
-function seleccionarModulo(opcion) {
-  addUserMessage(opcion); state.modulo=opcion;
-  if (opcion==="Tengo sintomas") iniciarModuloSintomas();
-  else if (opcion==="Creo que es urgente / signo de alarma") iniciarModuloAlarma();
-  else iniciarModuloSuspension();
-}
-
-function iniciarModuloSintomas() {
-  addBotMessage("Que sistema o area de tu cuerpo esta afectado?");
-  addChips(["Respiratorio (tos, gripe, garganta)","Gastrointestinal (estomago, diarrea, vomito)","Dolor abdominal","Musculoesqueletico (musculos, espalda, articulaciones)","Oftalmologico (ojos)","Dermatologico (piel)","Dolor de oido","Ginecologico","Dental","Urinario"],"seleccionarSistema");
-  state.fase="sistema";
-}
-function seleccionarSistema(s) { state.sistema=s; addUserMessage(s); addBotMessage("Cuanto tiempo llevas con estos sintomas?"); addChips(["Menos de 24 horas","1 a 3 dias","Mas de 3 dias"],"seleccionarDuracion"); }
-function seleccionarDuracion(d) { addUserMessage(d); addBotMessage("Como describes la intensidad de lo que sientes?"); addChips(["Leve - puedo trabajar con normalidad","Moderado - me dificulta mis actividades","Severo - no puedo realizar mis actividades"],"seleccionarIntensidad"); }
-
-const PROTOCOLOS = {
+let PROTOCOLOS = {
   "Respiratorio (tos, gripe, garganta)": {
-    leve:{ indicaciones:["Toma <b>Acetaminofen 1 gramo</b> cada 6 horas por 3 dias si tienes fiebre.","Mantente bien hidratado - al menos 2 litros de agua al dia.","Usa mascarilla en tu area de trabajo.","Si tienes tos, toma <b>Abrilar 1 cucharada</b> cada 8 horas por 5 dias.","Si tienes secrecion nasal, toma <b>Clorfeniramina 2 mg</b> cada 8 horas por 3 dias."], alerta:null },
-    moderado:{ indicaciones:["Toma <b>Panadol Multisintomas, Exflu o IRS</b> cada 8 horas por 3 dias.","Mantente hidratado y en reposo relativo.","Si tienes secrecion nasal, toma <b>Clorfeniramina 2 mg</b> cada 8 horas por 3 dias."], alerta:"Si presentas dificultad para respirar o fiebre que no cede, acude de inmediato a atencion medica." },
-    severo:{ indicaciones:["Si tienes secrecion nasal, toma <b>Clorfeniramina 2 mg</b> cada 8 horas por 3 dias."], alerta:"Llama de inmediato a tu enfermera encargada." }
+    leve:{ indicaciones:["Toma Acetaminofen 1 gramo cada 6 horas por 3 dias si tienes fiebre.","Mantente bien hidratado - al menos 2 litros de agua al dia.","Usa mascarilla en tu area de trabajo.","Si tienes tos, toma Abrilar 1 cucharada cada 8 horas por 5 dias.","Si tienes secrecion nasal, toma Clorfeniramina 2 mg cada 8 horas por 3 dias."], alerta:null },
+    moderado:{ indicaciones:["Toma Panadol Multisintomas, Exflu o IRS cada 8 horas por 3 dias.","Mantente hidratado y en reposo relativo.","Si tienes secrecion nasal, toma Clorfeniramina 2 mg cada 8 horas por 3 dias."], alerta:"Si presentas dificultad para respirar o fiebre que no cede, acude de inmediato a atencion medica." },
+    severo:{ indicaciones:["Si tienes secrecion nasal, toma Clorfeniramina 2 mg cada 8 horas por 3 dias."], alerta:"Llama de inmediato a tu enfermera encargada." }
   },
   "Gastrointestinal (estomago, diarrea, vomito)": {
-    leve:{ indicaciones:["Toma <b>suero oral abundante</b> (Pedialyte, Hidravida o Recover).","Toma <b>Enterogermina o Florenterol</b> cada 12 horas por 5 dias.","Sigue <b>dieta blanda</b>: sin grasas, condimentos, cafe ni picante."], alerta:"Si presentas dolor abdominal intenso o vomitos incontrolables, consulta de forma inmediata." },
-    moderado:{ indicaciones:["Toma <b>suero oral abundante</b>.","Toma <b>Enterogermina o Florenterol</b> cada 12 horas por 5 dias.","Sigue <b>dieta blanda</b>.","Si tienes diarrea abundante, toma <b>Loperamida 2 mg</b> cada 8 horas por 3 dias."], alerta:"Si presentas dolor abdominal intenso o vomitos incontrolables, consulta de forma inmediata." },
+    leve:{ indicaciones:["Toma suero oral abundante (Pedialyte, Hidravida o Recover).","Toma Enterogermina o Florenterol cada 12 horas por 5 dias.","Sigue dieta blanda: sin grasas, condimentos, cafe ni picante."], alerta:"Si presentas dolor abdominal intenso o vomitos incontrolables, consulta de forma inmediata." },
+    moderado:{ indicaciones:["Toma suero oral abundante.","Toma Enterogermina o Florenterol cada 12 horas por 5 dias.","Sigue dieta blanda.","Si tienes diarrea abundante, toma Loperamida 2 mg cada 8 horas por 3 dias."], alerta:"Si presentas dolor abdominal intenso o vomitos incontrolables, consulta de forma inmediata." },
     severo:{ indicaciones:[], alerta:"Comunicate de inmediato con tu enfermera o medico ocupacional." }
   },
+  "Dolor abdominal": {
+    leve:{ indicaciones:["Toma te de manzanilla para aliviar el malestar.","Puedes colocar una bolsa de agua caliente sobre tu vientre.","No consumas grasas ni alimentos pesados.","Observa si aparece algun otro sintoma."], alerta:null },
+    moderado:{ indicaciones:[], alerta:"Llama de inmediato al area de salud." },
+    severo:{ indicaciones:[], alerta:"Consulta de forma inmediata a la emergencia del Seguro Social de tu pais." }
+  },
   "Musculoesqueletico (musculos, espalda, articulaciones)": {
-    leve:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 5 dias.","Evita levantar cargas pesadas y movimientos bruscos.","Aplica frio local en el area afectada si hay inflamacion."], alerta:null },
-    moderado:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 5 dias.","Reposo relativo y aplica <b>hielo local</b>."], alerta:"Si tienes dificultad para movilizarte, llama de inmediato a tu enfermera encargada." },
+    leve:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas por 5 dias.","Evita levantar cargas pesadas y movimientos bruscos.","Aplica frio local en el area afectada si hay inflamacion."], alerta:null },
+    moderado:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas por 5 dias.","Reposo relativo y aplica hielo local."], alerta:"Si tienes dificultad para movilizarte, llama de inmediato a tu enfermera encargada." },
     severo:{ indicaciones:[], alerta:"Comunicate de inmediato con tu enfermera o medico ocupacional." }
   },
   "Oftalmologico (ojos)": {
-    leve:{ indicaciones:["Evita frotarte los ojos.","Si usas lentes de contacto, retirarlos temporalmente.","Mantén el area limpia con agua tibia."], alerta:"Contacta a tu enfermera o medico ocupacional." },
+    leve:{ indicaciones:["Evita frotarte los ojos.","Si usas lentes de contacto, retirarlos temporalmente.","Manten el area limpia con agua tibia."], alerta:"Contacta a tu enfermera o medico ocupacional." },
     moderado:{ indicaciones:[], alerta:"Contacta a tu enfermera o medico ocupacional para evaluacion pronta." },
     severo:{ indicaciones:[], alerta:"Comunicate de inmediato con tu enfermera o medico ocupacional." }
   },
   "Dermatologico (piel)": {
-    leve:{ indicaciones:["Mantén el area limpia y seca.","Evita rascarte o irritar la zona afectada.","Evita exposicion a productos quimicos o irritantes."], alerta:"Contacta a tu enfermera o medico ocupacional." },
+    leve:{ indicaciones:["Manten el area limpia y seca.","Evita rascarte o irritar la zona afectada.","Evita exposicion a productos quimicos o irritantes."], alerta:"Contacta a tu enfermera o medico ocupacional." },
     moderado:{ indicaciones:[], alerta:"Contacta a tu enfermera o medico ocupacional." },
     severo:{ indicaciones:[], alerta:"Comunicate de inmediato con tu enfermera o medico ocupacional." }
   },
   "Dolor de oido": {
-    leve:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 3 dias."], alerta:null },
-    moderado:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas por 3 dias.","Aplica <b>Ciriax Otic 1 gota</b> en el oido afectado cada 8 horas."], alerta:null },
-    severo:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas."], alerta:"Consulta al medico para evaluacion del oido a la brevedad." }
+    leve:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas por 3 dias."], alerta:null },
+    moderado:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas por 3 dias.","Aplica Ciriax Otic 1 gota en el oido afectado cada 8 horas."], alerta:null },
+    severo:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas."], alerta:"Consulta al medico para evaluacion del oido a la brevedad." }
   },
   "Ginecologico": {
-    leve:{ indicaciones:["Si presentas colicos menstruales, toma <b>Ibuprofen 400 mg</b> cada 8 horas.","Coloca un lienzo o bolsa de agua caliente sobre el abdomen.","Puedes tomar <b>te de manzanilla</b> como antiinflamatorio natural."], alerta:null },
-    moderado:{ indicaciones:["Toma <b>Ibuprofen 400 mg</b> cada 8 horas.","Puedes tomar <b>te de manzanilla</b>."], alerta:"Si presentas sangrado abundante, comunicate con tu enfermera encargada." },
+    leve:{ indicaciones:["Si presentas colicos menstruales, toma Ibuprofen 400 mg cada 8 horas.","Coloca un lienzo o bolsa de agua caliente sobre el abdomen.","Puedes tomar te de manzanilla como antiinflamatorio natural."], alerta:null },
+    moderado:{ indicaciones:["Toma Ibuprofen 400 mg cada 8 horas.","Puedes tomar te de manzanilla."], alerta:"Si presentas sangrado abundante, comunicate con tu enfermera encargada." },
     severo:{ indicaciones:[], alerta:"Si presentas sangrado abundante, busca atencion medica inmediata." }
   },
   "Dental": {
-    leve:{ indicaciones:["Toma <b>Ibuprofen 400 mg</b> cada 8 horas mientras buscas atencion con tu odontologo.","Evita alimentos muy frios, calientes o duros."], alerta:null },
-    moderado:{ indicaciones:["Toma <b>Ibuprofen 400 mg</b> cada 8 horas.","Agenda una cita con tu odontologo a la brevedad."], alerta:null },
-    severo:{ indicaciones:["Toma <b>Dexketoprofeno 25 mg</b> cada 8 horas."], alerta:"Consulta de forma urgente a tu odontologo." }
-  },
-  "Dolor abdominal": {
-    leve:{ indicaciones:["Toma <b>te de manzanilla</b> para aliviar el malestar.","Puedes colocar una <b>bolsa de agua caliente</b> sobre tu vientre.","No consumas grasas ni alimentos pesados.","Observa si aparece algun otro sintoma."], alerta:null },
-    moderado:{ indicaciones:[], alerta:"Llama de inmediato al area de salud." },
-    severo:{ indicaciones:[], alerta:"Consulta de forma inmediata a la emergencia del Seguro Social de tu pais." }
+    leve:{ indicaciones:["Toma Ibuprofen 400 mg cada 8 horas mientras buscas atencion con tu odontologo.","Evita alimentos muy frios, calientes o duros."], alerta:null },
+    moderado:{ indicaciones:["Toma Ibuprofen 400 mg cada 8 horas.","Agenda una cita con tu odontologo a la brevedad."], alerta:null },
+    severo:{ indicaciones:["Toma Dexketoprofeno 25 mg cada 8 horas."], alerta:"Consulta de forma urgente a tu odontologo." }
   },
   "Urinario": {
-    leve:{ indicaciones:["Aumenta tu ingesta de agua - al menos 2 litros al dia.","Evita cafe, alcohol y refrescos.","Mantén buena higiene en el area."], alerta:"Contacta a tu enfermera o medico ocupacional." },
+    leve:{ indicaciones:["Aumenta tu ingesta de agua - al menos 2 litros al dia.","Evita cafe, alcohol y refrescos.","Manten buena higiene en el area."], alerta:"Contacta a tu enfermera o medico ocupacional." },
     moderado:{ indicaciones:["Mantente bien hidratado - al menos 2 litros de agua al dia.","Evita cafe, alcohol y refrescos."], alerta:"Contacta a tu enfermera o medico ocupacional." },
     severo:{ indicaciones:[], alerta:"Comunicate de inmediato con tu enfermera o medico ocupacional." }
   }
 };
 
-function getNivel(i) { if(i.includes("Leve")) return "leve"; if(i.includes("Moderado")) return "moderado"; return "severo"; }
+let state = { fase:"bienvenida", pais:null, sitio:null, nombre:null, sistema:null, modulo:null, intensidad:null, referido:false, historial:[] };
+let API_KEY = "";
 
-async function seleccionarIntensidad(intensidad) {
-  addUserMessage(intensidad); state.intensidad = intensidad;
-  const nivel = getNivel(intensidad);
-  const esSevero = nivel==="severo", esModerado = nivel==="moderado";
-  const proto = PROTOCOLOS[state.sistema]?.[nivel];
-  const esReferido = esSevero || esModerado;
-  state.referido = esReferido;
+function getEnfermeria() {
+  if (state.pais==="Guatemala" && state.sitio) return SITIOS_GUATEMALA[state.sitio]?.enfermeria || MEDICO_REGIONAL;
+  return PAISES[state.pais]?.enfermeria || MEDICO_REGIONAL;
+}
+function getLabelContacto() { return ["Honduras","Nicaragua","Panama"].includes(state.pais) ? "Medico Ocupacional" : "Enfermeria"; }
+function buildSystemPrompt() {
+  const p = state.pais ? PAISES[state.pais] : null;
+  return `Eres el Asistente de Salud Ocupacional. Orientas colaboradores en sintomas, alarmas y suspensiones. Responde en espanol, empatico, breve. NUNCA diagnostiques. Pais: ${state.pais||"no indicado"} ${state.sitio?"Sitio: "+state.sitio:""} ${p?"Emergencias: "+p.emergencia:""} ${state.nombre?"Nombre: "+state.nombre:""} ${state.sistema?"Sistema: "+state.sistema:""}`;
+}
 
-  if (proto && proto.indicaciones.length > 0) {
-    let extraHtml = "";
-    if (proto.alerta) extraHtml += `<div class="${esSevero||esModerado?"alert-card":"success-card"}"><strong>${esSevero||esModerado?"Atencion":"Recuerda"}</strong>${proto.alerta}</div>`;
-    if (esReferido) extraHtml += `<div class="alert-card" style="margin-top:6px"><strong>${getLabelContacto()}</strong><b>${getEnfermeria()}</b></div>`;
-    addBotMessage(proto.indicaciones.map(i=>"• "+i).join("<br>"), extraHtml);
+function iniciarDemo() { const k=document.getElementById("api-key-input").value.trim(); if(k) API_KEY=k; document.getElementById("welcome-screen").style.display="none"; iniciarChat(); }
+function iniciarSinKey() { document.getElementById("welcome-screen").style.display="none"; iniciarChat(); }
+function iniciarChat() {
+  addBotMessage("Hola! Soy el Asistente de Salud Ocupacional de tu empresa. Puedo orientarte si tienes sintomas, una situacion de alarma o necesitas gestionar una suspension medica.");
+  addBotMessage("Primero, en que pais te encuentras?");
+  addChips(Object.keys(PAISES),"seleccionarPais");
+  state.fase="pais";
+}
+async function callClaude(t) {
+  state.historial.push({role:"user",content:t});
+  if(!API_KEY){const f="Para responder necesito la API key. Los flujos guiados siguen funcionando.";state.historial.push({role:"assistant",content:f});return f;}
+  const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":API_KEY,"anthropic-version":"2023-06-01"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:buildSystemPrompt(),messages:state.historial})});
+  const d=await r.json(); const tx=d.content?.[0]?.text||"Hubo un problema.";
+  state.historial.push({role:"assistant",content:tx}); return tx;
+}
+
+function addBotMessage(html,extra=""){const c=document.getElementById("messages");const row=document.createElement("div");row.className="msg-row bot";row.innerHTML=`<div class="bot-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="bubble">${html}</div>${extra}</div>`;c.appendChild(row);c.scrollTop=c.scrollHeight;}
+function addUserMessage(t){const c=document.getElementById("messages");const row=document.createElement("div");row.className="msg-row user";row.innerHTML=`<div class="bubble">${t}</div>`;c.appendChild(row);c.scrollTop=c.scrollHeight;}
+function addChips(opts,handler,tipo=""){const c=document.getElementById("messages");const div=document.createElement("div");div.style.paddingLeft="38px";const cid="chips_"+Date.now(),lid="opts_"+Date.now();window[lid]=opts;div.innerHTML=`<div class="chips" id="${cid}">${opts.map((o,i)=>`<button class="chip ${tipo}" onclick="${handler}(window['${lid}'][${i}]);document.getElementById('${cid}').parentElement.remove();">${o}</button>`).join("")}</div>`;c.appendChild(div);c.scrollTop=c.scrollHeight;}
+function showTyping(){const c=document.getElementById("messages");const row=document.createElement("div");row.className="msg-row bot";row.id="typing-indicator";row.innerHTML=`<div class="bot-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="bubble typing"><span></span><span></span><span></span></div>`;c.appendChild(row);c.scrollTop=c.scrollHeight;}
+function removeTyping(){const t=document.getElementById("typing-indicator");if(t)t.remove();}
+
+function seleccionarPais(p){state.pais=p;addUserMessage(p);if(p==="Guatemala"){addBotMessage("En cual sitio de trabajo te encuentras?");addChips(Object.keys(SITIOS_GUATEMALA),"seleccionarSitio");state.fase="sitio";}else{addBotMessage("Gracias. Cual es tu nombre?");state.fase="nombre";}}
+function seleccionarSitio(s){state.sitio=s;addUserMessage(s);addBotMessage("Gracias. Cual es tu nombre?");state.fase="nombre";}
+function ingresarNombre(n){if(!n||n.trim()===""){addBotMessage("Por favor indicame tu nombre.");return;}state.nombre=n.trim();addUserMessage(state.nombre);mostrarMenuPrincipal();}
+function mostrarMenuPrincipal(){const s=state.nombre?`, ${state.nombre}`:"";addBotMessage(`Hola${s}. En que puedo orientarte hoy?`);addChips(["Tengo sintomas","Creo que es urgente / signo de alarma","Tengo una suspension medica"],"seleccionarModulo");state.fase="menu";}
+function seleccionarModulo(o){addUserMessage(o);state.modulo=o;if(o==="Tengo sintomas")iniciarModuloSintomas();else if(o==="Creo que es urgente / signo de alarma")iniciarModuloAlarma();else iniciarModuloSuspension();}
+
+function iniciarModuloSintomas(){addBotMessage("Que sistema o area de tu cuerpo esta afectado?");addChips(Object.keys(PROTOCOLOS),"seleccionarSistema");state.fase="sistema";}
+function seleccionarSistema(s){state.sistema=s;addUserMessage(s);addBotMessage("Cuanto tiempo llevas con estos sintomas?");addChips(["Menos de 24 horas","1 a 3 dias","Mas de 3 dias"],"seleccionarDuracion");}
+function seleccionarDuracion(d){addUserMessage(d);addBotMessage("Como describes la intensidad?");addChips(["Leve - puedo trabajar con normalidad","Moderado - me dificulta mis actividades","Severo - no puedo realizar mis actividades"],"seleccionarIntensidad");}
+
+function getNivel(i){if(i.includes("Leve"))return"leve";if(i.includes("Moderado"))return"moderado";return"severo";}
+
+async function seleccionarIntensidad(intensidad){
+  addUserMessage(intensidad);state.intensidad=intensidad;
+  const nivel=getNivel(intensidad),esSevero=nivel==="severo",esModerado=nivel==="moderado";
+  const proto=PROTOCOLOS[state.sistema]?.[nivel];
+  const esReferido=esSevero||esModerado;state.referido=esReferido;
+  if(proto&&proto.indicaciones.length>0){
+    let ex="";
+    if(proto.alerta)ex+=`<div class="${esSevero||esModerado?"alert-card":"success-card"}"><strong>${esSevero||esModerado?"Atencion":"Recuerda"}</strong>${proto.alerta}</div>`;
+    if(esReferido)ex+=`<div class="alert-card" style="margin-top:6px"><strong>${getLabelContacto()}</strong><b>${getEnfermeria()}</b></div>`;
+    addBotMessage(proto.indicaciones.map(i=>"- "+i).join("<br>"),ex);
   } else {
-    addBotMessage("Para este nivel de sintomas necesitas orientacion directa de nuestro equipo de salud.",
-      `<div class="alert-card"><strong>${proto?.alerta||"Contacto recomendado"}</strong>${getLabelContacto()}: <b>${getEnfermeria()}</b></div>`);
+    addBotMessage("Para este nivel necesitas orientacion directa.",`<div class="alert-card"><strong>${proto?.alerta||"Contacto recomendado"}</strong>${getLabelContacto()}: <b>${getEnfermeria()}</b></div>`);
   }
-
-  await registrarConsulta({ pais:state.pais||"", sitio:state.sitio||"", colaborador:state.nombre||"", modulo:"Sintomas", sistema:state.sistema||"", intensidad:intensidad, referido:esReferido?"Si":"No" });
+  await registrarConsulta({pais:state.pais||"",sitio:state.sitio||"",colaborador:state.nombre||"",modulo:"Sintomas",sistema:state.sistema||"",intensidad:intensidad,referido:esReferido?"Si":"No"});
   mostrarOpccionFinal();
 }
 
-function iniciarModuloAlarma() {
-  const p = PAISES[state.pais];
-  addBotMessage("Ante signos de alarma, la accion inmediata es lo mas importante:",
-    `<div class="alert-card"><strong>Signos que requieren atencion inmediata:</strong>${ALARMAS.slice(0,5).map(a=>"• "+a).join("<br>")}<br><br><b>Emergencias ${state.pais}:</b> ${p.emergencia}<br><b>Medico de clinica:</b> ${p.medico}</div>`);
-  addBotMessage("Presentas alguno de estos sintomas en este momento?");
+function iniciarModuloAlarma(){
+  const p=PAISES[state.pais];
+  addBotMessage("Ante signos de alarma, la accion inmediata es lo mas importante:",`<div class="alert-card"><strong>Signos criticos:</strong>${ALARMAS.slice(0,5).map(a=>"- "+a).join("<br>")}<br><br><b>Emergencias ${state.pais}:</b> ${p.emergencia}<br><b>Medico:</b> ${p.medico}</div>`);
+  addBotMessage("Presentas alguno de estos sintomas ahora?");
   addChips(["Si, presento uno o mas de estos sintomas","No, pero tengo otro sintoma preocupante"],"respuestaAlarma","danger");
 }
-
-async function respuestaAlarma(respuesta) {
-  addUserMessage(respuesta);
-  const p = PAISES[state.pais];
-  const esEmergencia = respuesta.startsWith("Si");
-  if (esEmergencia) {
-    addBotMessage("<b>Esto requiere atencion medica inmediata.</b> No esperes.",
-      `<div class="alert-card"><strong>Llama ahora mismo</strong><b>Emergencias ${state.pais}:</b> ${p.emergencia}<br><b>Medico de clinica:</b> ${p.medico}<br><b>${getLabelContacto()}:</b> ${getEnfermeria()}<br><br>Si estas solo/a, avisa a un companero cercano.</div>`);
-  } else {
-    addBotMessage("Cuentame que sintoma te preocupa y lo evaluamos juntos."); state.fase="libre";
-  }
-  await registrarConsulta({ pais:state.pais||"", sitio:state.sitio||"", colaborador:state.nombre||"", modulo:"Alarma", sistema:"", intensidad:esEmergencia?"Emergencia":"Preocupante", referido:"Si" });
+async function respuestaAlarma(r){
+  addUserMessage(r);const p=PAISES[state.pais];const esE=r.startsWith("Si");
+  if(esE){addBotMessage("<b>Esto requiere atencion medica inmediata.</b> No esperes.",`<div class="alert-card"><strong>Llama ahora</strong><b>Emergencias:</b> ${p.emergencia}<br><b>Medico:</b> ${p.medico}<br><b>${getLabelContacto()}:</b> ${getEnfermeria()}</div>`);}
+  else{addBotMessage("Cuentame que sintoma te preocupa.");state.fase="libre";}
+  await registrarConsulta({pais:state.pais||"",sitio:state.sitio||"",colaborador:state.nombre||"",modulo:"Alarma",sistema:"",intensidad:esE?"Emergencia":"Preocupante",referido:"Si"});
   mostrarOpccionFinal();
 }
 
-function iniciarModuloSuspension() {
-  const ente = ENTE_SALUD[state.pais]||"seguro social";
-  addBotMessage(`Entendido. Te guio paso a paso para gestionar tu suspension medica en ${state.pais}.`);
-  setTimeout(()=>{ addBotMessage("<b>Paso 1 - Notifica a tu lider</b><br>Informa a tu lider directo sobre tu suspension.",`<div class="info-card"><strong>Por que es importante?</strong>Tu lider necesita saberlo para cubrir tus funciones y registrar tu ausencia.</div>`); },400);
-  setTimeout(()=>{ addBotMessage(`<b>Paso 2 - Envia tu suspension al area de salud</b><br>Remite tu constancia a la enfermera o medico de tu sitio.`,`<div class="info-card"><strong>${getLabelContacto()} de tu sitio</strong>${getEnfermeria()}</div>`); },800);
-  setTimeout(()=>{ addBotMessage("<b>Paso 3 - Notifica a tu KAM de Gestion Humana</b><br>Para que registre la suspension y notifique a nomina."); },1200);
-  setTimeout(()=>{ addBotMessage("<b>Tipos de suspension validos</b>",`<div class="info-card"><strong>Suspension del seguro social (${ente})</strong>Es la mas comun y valida directamente.<br><br><strong>Suspension de medico particular</strong>Solo valida si tiene <b>firma y sello de colegiado activo</b>. Debe validarla el Medico PDC.</div>`); },1600);
-  setTimeout(()=>{ addBotMessage(`Tu suspension fue emitida por el seguro social (${ente}) o por un medico particular?`); addChips([`Por el ${ente} (seguro social)`,"Por medico particular","Tengo otra duda"],"respuestaTipoSuspension"); },2000);
+function iniciarModuloSuspension(){
+  const e=ENTE_SALUD[state.pais]||"seguro social";
+  addBotMessage(`Te guio paso a paso para gestionar tu suspension medica en ${state.pais}.`);
+  setTimeout(()=>addBotMessage("<b>Paso 1 - Notifica a tu lider</b>",`<div class="info-card"><strong>Por que es importante?</strong>Tu lider necesita saberlo para cubrir tus funciones.</div>`),400);
+  setTimeout(()=>addBotMessage(`<b>Paso 2 - Envia tu suspension al area de salud</b>`,`<div class="info-card"><strong>${getLabelContacto()}</strong>${getEnfermeria()}</div>`),800);
+  setTimeout(()=>addBotMessage("<b>Paso 3 - Notifica a tu KAM de Gestion Humana</b>"),1200);
+  setTimeout(()=>addBotMessage("<b>Tipos de suspension validos</b>",`<div class="info-card"><strong>Seguro social (${e})</strong>Valida directamente.<br><br><strong>Medico particular</strong>Requiere firma y sello de colegiado activo. Debe validarla el Medico PDC.</div>`),1600);
+  setTimeout(()=>{addBotMessage(`Tu suspension fue del seguro social o de medico particular?`);addChips([`Por el ${e} (seguro social)`,"Por medico particular","Tengo otra duda"],"respuestaTipoSuspension");},2000);
 }
-
-async function respuestaTipoSuspension(tipo) {
-  addUserMessage(tipo);
-  const ente = ENTE_SALUD[state.pais]||"seguro social";
-  if (tipo.includes("seguro social")||tipo.includes(ente)) {
-    addBotMessage(`Perfecto. Tu suspension del <b>${ente}</b> es valida directamente.`,`<div class="success-card"><strong>Resumen</strong>1. Notifica a tu <b>lider directo</b>.<br>2. Envia constancia a <b>${getLabelContacto()}: ${getEnfermeria()}</b>.<br>3. Notifica a tu <b>KAM de Gestion Humana</b>.</div>`);
-  } else if (tipo.includes("particular")) {
-    addBotMessage("Las suspensiones de medico particular requieren un paso adicional.",`<div class="alert-card"><strong>Requisito</strong>La constancia debe tener <b>firma y sello de colegiado activo</b>.<br>Enviala a: <b>${getLabelContacto()}: ${getEnfermeria()}</b></div>`);
-  } else {
-    addBotMessage("Con gusto te ayudo. Cuentame cual es tu duda."); state.fase="libre"; return;
-  }
-  await registrarConsulta({ pais:state.pais||"", sitio:state.sitio||"", colaborador:state.nombre||"", modulo:"Suspension", sistema:"", intensidad:tipo, referido:"Si" });
+async function respuestaTipoSuspension(tipo){
+  addUserMessage(tipo);const e=ENTE_SALUD[state.pais]||"seguro social";
+  if(tipo.includes("seguro social")||tipo.includes(e)){addBotMessage(`Tu suspension del ${e} es valida directamente.`,`<div class="success-card"><strong>Pasos</strong>1. Notifica a tu lider.<br>2. Envia constancia a ${getLabelContacto()}: ${getEnfermeria()}.<br>3. Notifica a tu KAM.</div>`);}
+  else if(tipo.includes("particular")){addBotMessage("Las suspensiones de medico particular requieren validacion.",`<div class="alert-card"><strong>Requisito</strong>Firma y sello de colegiado activo.<br>Envia a: ${getLabelContacto()}: ${getEnfermeria()}</div>`);}
+  else{addBotMessage("Cuentame tu duda.");state.fase="libre";return;}
+  await registrarConsulta({pais:state.pais||"",sitio:state.sitio||"",colaborador:state.nombre||"",modulo:"Suspension",sistema:"",intensidad:tipo,referido:"Si"});
   mostrarOpccionFinal();
 }
 
-function mostrarOpccionFinal() {
-  setTimeout(()=>{ addBotMessage("Hay algo mas en lo que pueda orientarte?"); addChips(["Tengo otra consulta","Eso es todo, gracias"],"cierreConversacion"); },600);
-}
-function cierreConversacion(opcion) {
-  addUserMessage(opcion);
-  if (opcion.includes("otra consulta")) mostrarMenuPrincipal();
-  else { addBotMessage("Que te mejores pronto. Estamos aqui cuando nos necesites. Cuidate!"); state.fase="cerrado"; }
-}
+function mostrarOpccionFinal(){setTimeout(()=>{addBotMessage("Hay algo mas en lo que pueda orientarte?");addChips(["Tengo otra consulta","Eso es todo, gracias"],"cierreConversacion");},600);}
+function cierreConversacion(o){addUserMessage(o);if(o.includes("otra consulta"))mostrarMenuPrincipal();else{addBotMessage("Que te mejores pronto. Cuidate!");state.fase="cerrado";}}
 
-async function sendUserMessage() {
-  const input = document.getElementById("userInput");
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = ""; input.style.height = "auto";
-  addUserMessage(text);
-  if (state.fase==="nombre") { ingresarNombre(text); return; }
-  if (state.fase==="cerrado") { addBotMessage("Sesion cerrada. Recarga la pagina para iniciar una nueva consulta."); return; }
+async function sendUserMessage(){
+  const input=document.getElementById("userInput");const t=input.value.trim();if(!t)return;
+  input.value="";input.style.height="auto";addUserMessage(t);
+  if(state.fase==="nombre"){ingresarNombre(t);return;}
+  if(state.fase==="cerrado"){addBotMessage("Sesion cerrada. Recarga la pagina.");return;}
   showTyping();
-  try { const r = await callClaude(text); removeTyping(); addBotMessage(r); }
-  catch(e) { removeTyping(); addBotMessage("Hubo un problema de conexion. Por favor intenta de nuevo."); }
+  try{const r=await callClaude(t);removeTyping();addBotMessage(r);}
+  catch(e){removeTyping();addBotMessage("Hubo un problema de conexion.");}
 }
-function handleKey(e) { if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); sendUserMessage(); } }
-function autoResize(el) { el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,100)+"px"; }
-window.addEventListener("DOMContentLoaded",()=>{ document.getElementById("api-key-input").focus(); });
+function handleKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendUserMessage();}}
+function autoResize(el){el.style.height="auto";el.style.height=Math.min(el.scrollHeight,100)+"px";}
+
+function abrirLoginAdmin(){document.getElementById("admin-login").style.display="flex";document.getElementById("admin-pwd").value="";document.getElementById("admin-error").style.display="none";setTimeout(()=>document.getElementById("admin-pwd").focus(),100);}
+function cerrarLoginAdmin(){document.getElementById("admin-login").style.display="none";}
+function verificarAdmin(){const p=document.getElementById("admin-pwd").value;if(p===ADMIN_PWD){cerrarLoginAdmin();abrirAdmin();}else{document.getElementById("admin-error").style.display="block";}}
+function abrirAdmin(){inicializarAdmin();document.getElementById("admin-panel").classList.add("open");}
+function cerrarAdmin(){document.getElementById("admin-panel").classList.remove("open");}
+function switchTab(tab,btn){document.querySelectorAll(".admin-tab").forEach(t=>t.classList.remove("active"));document.querySelectorAll(".admin-section").forEach(s=>s.classList.remove("active"));btn.classList.add("active");document.getElementById("tab-"+tab).classList.add("active");}
+function inicializarAdmin(){
+  document.getElementById("admin-sistema-sel").innerHTML=Object.keys(PROTOCOLOS).map(s=>`<option value="${s}">${s}</option>`).join("");
+  cargarProtocolo();
+  document.getElementById("admin-pais-sel").innerHTML=Object.keys(PAISES).map(p=>`<option value="${p}">${p}</option>`).join("");
+  cargarContactoPais();
+  document.getElementById("admin-sitio-sel").innerHTML=Object.keys(SITIOS_GUATEMALA).map(s=>`<option value="${s}">${s}</option>`).join("");
+  cargarContactoSitio();
+  document.getElementById("admin-medico-regional").value=MEDICO_REGIONAL;
+}
+function cargarProtocolo(){const s=document.getElementById("admin-sistema-sel").value;const n=document.getElementById("admin-nivel-sel").value;const p=PROTOCOLOS[s]?.[n];if(p){document.getElementById("admin-indicaciones").value=p.indicaciones.join("\n");document.getElementById("admin-alerta").value=p.alerta||"";}}
+function guardarProtocolo(){const s=document.getElementById("admin-sistema-sel").value;const n=document.getElementById("admin-nivel-sel").value;const ind=document.getElementById("admin-indicaciones").value.trim().split("\n").filter(l=>l.trim()!=="");const al=document.getElementById("admin-alerta").value.trim();if(!PROTOCOLOS[s])PROTOCOLOS[s]={};PROTOCOLOS[s][n]={indicaciones:ind,alerta:al||null};const m=document.getElementById("proto-msg");m.style.display="block";setTimeout(()=>m.style.display="none",2500);}
+function cargarContactoPais(){const p=document.getElementById("admin-pais-sel").value;const i=PAISES[p];document.getElementById("admin-emergencia").value=i?.emergencia||"";document.getElementById("admin-enfermeria-pais").value=i?.enfermeria||"";}
+function cargarContactoSitio(){const s=document.getElementById("admin-sitio-sel").value;document.getElementById("admin-enfermeria-sitio").value=SITIOS_GUATEMALA[s]?.enfermeria||"";}
+function guardarContactos(){
+  MEDICO_REGIONAL=document.getElementById("admin-medico-regional").value.trim();
+  const p=document.getElementById("admin-pais-sel").value;
+  PAISES[p].emergencia=document.getElementById("admin-emergencia").value.trim();
+  PAISES[p].enfermeria=document.getElementById("admin-enfermeria-pais").value.trim()||null;
+  const s=document.getElementById("admin-sitio-sel").value;
+  SITIOS_GUATEMALA[s].enfermeria=document.getElementById("admin-enfermeria-sitio").value.trim();
+  const m=document.getElementById("contacto-msg");m.style.display="block";setTimeout(()=>m.style.display="none",2500);
+}
+
+window.addEventListener("DOMContentLoaded",()=>document.getElementById("api-key-input").focus());
 </script>
 </body>
 </html>
